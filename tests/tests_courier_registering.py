@@ -106,3 +106,4 @@ class TestCourierRegistering:
         except:
             login_id = courier_2.login_courier(courier.login, courier.password).json()['id']
             courier_2.delete_courier_account(login_id)
+

@@ -11,3 +11,4 @@ class TestOrderListGetting:
         get_order_list_response = Order.get_order_list()
         if get_order_list_response.status_code == 200:
             order_list = get_order_list_response.json()['orders']
+

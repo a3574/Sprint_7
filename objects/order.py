@@ -60,3 +60,4 @@ class Order:
         responce_finish_order = requests.put(
             f'https://qa-scooter.praktikum-services.ru/api/v1/orders/finish/{order_id}')
         return responce_finish_order
+

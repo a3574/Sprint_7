@@ -34,3 +34,4 @@ def get_order_data(request):
     order_data['response'] = order.create_order(request.param)
     yield order_data
     order.reject_order(order_data['response'].json()['track'])
+

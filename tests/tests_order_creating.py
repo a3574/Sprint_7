@@ -12,3 +12,4 @@ class TestCourierCreating:
         if order_data['response'].status_code == 201:
             track_id = order_data['response'].json()['track']
         assert track_id is not None and order_data['response'].status_code == 201
+

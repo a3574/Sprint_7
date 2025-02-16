@@ -42,3 +42,4 @@ class Courier:
         response_get_courier_orders_count = requests.get(
             f"https://qa-scooter.praktikum-services.ru/api/v1/courier/{courier_id}/ordersCount")
         return response_get_courier_orders_count
+

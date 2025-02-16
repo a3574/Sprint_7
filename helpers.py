@@ -30,3 +30,4 @@ def generate_random_date():
     random_date = None
     random_date = start_date + timedelta(days=random.randint(0, (end_date - start_date).days))
     return random_date
+

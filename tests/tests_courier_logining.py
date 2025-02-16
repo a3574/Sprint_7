@@ -60,3 +60,4 @@ class TestCourierLogining:
         courier = Courier(courier_data.get('login'), courier_data.get('first_name'), courier_data.get('password'))
         response_login = courier.login_courier(password=courier.login, login=courier.password)
         assert response_login.status_code == 404
+

@@ -9,7 +9,5 @@ class TestCourierCreating:
     def test_order_creating_return_status_201_and_track_success(self, get_order_data):
         order_data = get_order_data
         track_id = None
-        if order_data['response'].status_code == 201:
-            track_id = order_data['response'].json()['track']
-        assert track_id is not None and order_data['response'].status_code == 201
+        assert order_data['response'].status_code == 201 and 'track' in order_data['response'].json()
 

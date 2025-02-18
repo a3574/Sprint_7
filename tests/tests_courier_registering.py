@@ -22,11 +22,8 @@ class TestCourierRegistering:
         courier_data = get_courier_data
         courier = courier_data['courier']
         register_courier_response_2 = courier.register_courier(courier.login, courier.first_name, courier.password)
-        try:
-            assert register_courier_response_2.status_code == 409
-        except:
-            login_id = courier.login_courier(courier.login, courier.password).json()['id']
-            courier.delete_courier_account(login_id)
+        assert register_courier_response_2.status_code == 409 and register_courier_response_2.json() == {
+            'message': 'Этот логин уже используется. Попробуйте другой.'}
 
     @allure.title('Тест чтобы создать курьера, нужно передать в ручку все обязательные поля.')
     @allure.description(
@@ -52,19 +49,21 @@ class TestCourierRegistering:
             login_id = courier.login_courier(login=courier.login, password=courier.password).json()['id']
             courier.delete_courier_account(login_id)
         assert 201 not in [register_without_login_response.status_code, register_without_password_response.status_code,
-                           register_without_first_name_response.status_code]
+                           register_without_first_name_response.status_code] and register_without_login_response.json() != {
+                   'ok': True} and register_without_password_response.json() != {
+                   'ok': True} and register_without_first_name_response.json() != {'ok': True}
 
     @allure.title('Тест запрос возвращает правильный код ответа.')
     @allure.description('Создаем(регистрируем курьера). Проверяем что запрос вернул статус 201.')
     def test_register_courier_return_code_201_success(self, get_courier_data):
         courier_data = get_courier_data
-        assert courier_data['response'].status_code == 201
+        assert courier_data['response'].status_code == 201 and courier_data['response'].json() == {'ok': True}
 
     @allure.title('Тест успешный запрос возвращает {"ok":true}.')
     @allure.description('Создаем(регистрируем курьера). Проверяем что запрос вернул текст ответа {"ok":true}.')
     def test_register_courier_return_ok_true_success(self, get_courier_data):
         courier_data = get_courier_data
-        assert courier_data['response'].json() == {'ok': True}
+        assert courier_data['response'].json() == {'ok': True} and courier_data['response'].status_code == 201
 
     @allure.title('Тест если одного из полей нет, запрос возвращает ошибку.')
     @allure.description(
@@ -89,7 +88,10 @@ class TestCourierRegistering:
         if register_without_first_name_response == 201:
             login_id = courier.login_courier(login=courier.login, password=courier.password).json()['id']
             courier.delete_courier_account(login_id)
-        assert register_without_login_response.status_code == 400 and register_without_password_response.status_code == 400 and register_without_first_name_response.status_code == 400
+        assert register_without_login_response.status_code == 400 and register_without_login_response.json() == {
+            'message': 'Недостаточно данных для создания учетной записи'} and register_without_password_response.status_code == 400 and register_without_password_response.json() == {
+                   'message': 'Недостаточно данных для создания учетной записи'} and register_without_first_name_response.status_code == 400 and register_without_first_name_response.json() == {
+                   'message': 'Недостаточно данных для создания учетной записи'}
 
     @allure.title('Тест если создать пользователя с логином, который уже есть, возвращается ошибка.')
     @allure.description(
@@ -101,9 +103,5 @@ class TestCourierRegistering:
         courier_2 = courier_data_2['courier']
         register_courier_response_2 = courier_2.register_courier(courier.login, courier_2.first_name,
                                                                  courier_2.password)
-        try:
-            assert register_courier_response_2.status_code != 201
-        except:
-            login_id = courier_2.login_courier(courier.login, courier.password).json()['id']
-            courier_2.delete_courier_account(login_id)
 
+        assert register_courier_response_2.status_code != 201 and register_courier_response_2.json() != {'ok': True}
